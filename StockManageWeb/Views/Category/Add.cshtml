@@ -1,0 +1,96 @@
+﻿@model StockManageWeb.Models.CategoryVM
+@{
+
+
+    ViewBag.Title = "Add Category";
+}
+@{
+    Layout = "~/views/shared/_Layout.cshtml";
+}
+@if (ViewBag.message != null)
+{
+    <p class="@ViewBag.color">@ViewBag.message</p>
+
+}
+<form method="post">
+
+    <div class="row">
+        <div class="col-3">
+
+        </div>
+
+        <div class="col-6 center">
+            <div>
+                <h6 class="text-bold">Category Name</h6>
+                <input class="form-control" type="text" name="Name" value="@Model.Name" />
+
+                @Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })
+
+                <h6 class="text-bold">Category Code</h6>
+                <input class="form-control" type="text" name="Code" value="@Model.Code" />
+                @Html.ValidationMessageFor(c => c.Code, null, new { @class = "text-danger" })
+            </div><br />
+            <div>
+                <input class="btn btn-success" type="submit" value="Add" />
+            </div>
+        </div>
+
+        <div class="col-3">
+
+        </div>
+
+    </div>
+
+</form><br />
+
+
+
+<div id="search" class="offset-md-9 col-md-3">
+    <input id="myInput" type="text" class="form-control" placeholder="Search..">
+</div>
+
+
+
+<br />
+
+<table class="table table-striped" id="myTable">
+    <thead>
+        <tr>
+            <th>Sl</th>
+            <th>Category Name</th>
+            <th>Category Code</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{int sl = 1; }
+        @foreach (var i in Model.categories)
+        {
+            <tr>
+                <td>@(sl++)</td>
+                <td>@i.Name</td>
+                <td>@i.Code</td>
+                <td>
+                    <a href="/category/Edit?id=@i.ID" class="btn btn-primary" name="Name">Edit</a>
+                    <a href="/category/Delete?id=@i.ID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

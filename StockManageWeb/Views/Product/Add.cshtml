@@ -1,0 +1,217 @@
+﻿@model StockManageWeb.Models.ProductVM
+@{
+    ViewBag.Title = "Add";
+}
+
+@{
+    Layout = "~/views/shared/_Layout.cshtml";
+}
+@if (ViewBag.message != null)
+{
+    <div class="alert alert-info">@ViewBag.message</div>
+
+}
+<div class="row center">
+    <div class="container" style="margin-left:5%">
+        <form method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @*<table>
+
+                    <tr>
+                        <td><h6 class="text-bold">Product Name</h6></td>
+                        <td><input class="form-control" type="text" name="Name" /></td>
+                        <td>@Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+                        <td><h6 class="text-bold">Product Code</h6></td>
+                        <td><input class="form-control" type="text" name="Code" /></td>
+                        <td>@Html.ValidationMessageFor(c => c.Code, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+                        <td><h6 class="text-bold">Product Reorder Level</h6></td>
+                        <td><input class="form-control" type="text" name="ReorderLevel" /></td>
+                        <td>@Html.ValidationMessageFor(c => c.ReorderLevel, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+
+                        <td><h6 class="text-bold">Product Category</h6></td>
+
+                        <td>
+                            @Html.DropDownListFor(c => c.CategoryID, Model.CategoryList, "--Select--", new { @class = "form-control" })
+
+                        </td>
+                        <td><a href="/Category/add" class="btn btn-danger">+</a></td>
+                        <td>  @Html.ValidationMessageFor(c => c.CategoryID, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+                        <td><h6 class="text-bold">Product Discription</h6></td>
+                        <td><input class="form-control" type="text" name="Discription" /></td>
+                        <td>  @Html.ValidationMessageFor(c => c.Discription, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+                        <td><h6 class="text-bold">Upload</h6></td>
+                        <td>
+                            <input class="form-control" type="file" name="ImageData" onchange="fileCheck(this);" />
+                        </td>
+                        <td>  @Html.ValidationMessageFor(c => c.Data, null, new { @class = "text-danger" })</td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input class="btn btn-success" type="submit" value="Add" /></td>
+
+                    </tr>
+
+                </table>*@
+            <div class="col-12 row">
+                <div class="col-2">
+
+                </div>
+                <div class="col-8 center">
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="Code">Code</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Code, null, new { @class = "form-control", placeholder = "Please Enter Product Code" })
+                            @Html.ValidationMessageFor(c => c.Code, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.Name, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Name, null, new { @class = "form-control", placeholder = "Please Enter Product Name" })
+                            @Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.ReorderLevel, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.ReorderLevel, null, new { @class = "form-control", placeholder = "Please Enter Reorder Level" })
+                            @Html.ValidationMessageFor(c => c.ReorderLevel, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.CategoryID, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(x => x.CategoryID, Model.CategoryList, "--Select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(c => c.CategoryID, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="/Category/add" class="btn btn-danger pull-right">+</a>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="discription">Description</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Discription, null, new { @class = "form-control", placeholder = "Type description here..." })
+                            @Html.ValidationMessageFor(c => c.Discription, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="Data">Image</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="file" name="ImageData" onchange="fileCheck(this);" />
+                            @Html.ValidationMessageFor(c => c.Data, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success" value="Add">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+
+                </div>
+            </div>
+        </form>
+
+        <div id="search" class="offset-md-9 col-md-3">
+            <input id="myInput" type="text" class="form-control" placeholder="Search..">
+        </div>
+        <br />
+
+        <div class="col-12 center">
+            <table class="table table-striped" id="myTable">
+
+                <tr>
+                    <th>Sl</th>
+                    <th class="text-center">Product Name</th>
+                    <th class="text-center">Product Code</th>
+                    <th class="text-center">Category</th>
+                    <th>Reoreder Level</th>
+                    <th class="text-center">Photo</th>
+                    <th class="text-center">Action</th>
+
+                </tr>
+
+
+                @{int sl = 1; }
+                @foreach (var i in Model.products)
+                {
+                    <tr>
+                        <td>@(sl++ )</td>
+                        <td>@i.Name</td>
+                        <td>@i.Code</td>
+                        <td>@i.categories.Name</td>
+                        <td>@i.ReorderLevel</td>
+                        <td>
+
+                            @if (i.Data != null)
+                            {
+                                var base64 = Convert.ToBase64String(i.Data);
+                                var imgsrc = string.Format("data:image/png;base64,{0}", base64);
+                                <img src='@imgsrc' style="max-width:100px;max-height:100px" id="@i.ID" / >
+                            }
+
+                        </td>
+                        <td>
+                            <a href="/Product/Edit?id=@i.ID" class="btn btn-primary" name="Name">Edit</a>
+                            <a href="/Product/Delete?id=@i.ID" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        function fileCheck(obj) {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
+            }
+            else {
+                alert("Done");
+            }
+
+        }
+    </script>
+
+}

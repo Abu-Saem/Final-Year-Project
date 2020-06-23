@@ -1,0 +1,138 @@
+﻿
+@model StockManageWeb.Models.ProductVM
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+}
+@*<div class="alert alert-info">@ViewBag.message</div>
+    <div class="row" style="margin-left:300px">*@
+<div class="col-12">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 ">
+        <form method="post" enctype="multipart/form-data">
+            <table>
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Name</label>
+                    </td>
+                    <td>
+                        @*<input type="text" name="Name" value="@Model.Name" />*@
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Code</label>
+                    </td>
+                    <td>
+
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Category</label>
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(c => c.CategoryID, Model.CategoryList, "--Select--", new { @class = "form-control" })
+                    </td>
+
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Reorder Level</label>
+                    </td>
+                    <td>
+                        @*<input class="text-primary" type="text" name="ReorderLevel" value="@Model.ReorderLevel" />*@
+                        @Html.EditorFor(model => model.ReorderLevel, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Description</label>
+                    </td>
+                    <td>
+                        @*<input class="text-primary" type="text" name="Discription" value="@Model.Discription" />*@
+                        @Html.EditorFor(model => model.Discription, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <label class="control-label col-md-2" for="Data">Image</label>
+                    </td>
+
+
+                    <td>
+                        <input type="file" name="ImageData" onchange="fileCheck(this);" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="btn btn-success" type="submit" value="Update" /></td>
+
+                </tr>
+
+
+
+            </table>
+
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        function fileCheck(obj) {
+            var ID = $("#ImageData").val();
+            var jsonData = { ID: ID };
+
+            $.ajax(
+                {
+                    url: "/product/GetbyID2",
+                    type: "POST",
+                    data: jsonData,
+                    success: function (Product) {
+
+                        $("#img").val(Product);
+
+
+                        //$("#CodeText").val("ReorderLevel...");
+                        //$("#PreviousCostPriceText").val("unitPrice....");
+                        //$("#PreviousMRPText").val("aProduct...");
+
+                    },
+                    error: function (response) {
+                        alert(response);
+                    }
+
+                }
+            );
+        }
+
+
+    </script>
+}

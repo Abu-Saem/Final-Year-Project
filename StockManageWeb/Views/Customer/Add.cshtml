@@ -1,0 +1,168 @@
+﻿@model StockManageWeb.Models.CustomerVM
+@{
+    /**/
+
+    ViewBag.Title = "Add";
+}
+<div class="row center">
+    <div class="container" style="margin-left:5%">
+        @using (Html.BeginForm("Add", "Customer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="col-12 row">
+                <div class="col-2">
+
+                </div>
+                <div class="col-8 center">
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.Name, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Name, null, new { @class = "form-control", placeholder = "Customer Name" })
+                            @Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="Code">Code</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Code, null, new { @class = "form-control", placeholder = "customer code" })
+                            @Html.ValidationMessageFor(c => c.Code, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.Address, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Address, null, new { @class = "form-control", placeholder = "Customer Address" })
+                            @Html.ValidationMessageFor(c => c.Address, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(x => x.Email, null, new { @class = "control-label col-sm-2" })
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Email, null, new { @class = "form-control", placeholder = "Customer Email" })
+                            @Html.ValidationMessageFor(c => c.Email, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="discription">contact</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Contact, null, new { @class = "form-control", placeholder = "customer Contact..." })
+                            @Html.ValidationMessageFor(c => c.Contact, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="discription">L.Point</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => x.Loyalty, null, new { @class = "form-control", placeholder = "Customer Loyalty point" })
+                            @Html.ValidationMessageFor(c => c.Loyalty, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2" for="Data">Image</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="file" name="ImageData" onchange="fileCheck(this);" />
+                            @Html.ValidationMessageFor(c => c.Data, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success" value="Add">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div id="search" class="offset-md-9 col-md-3">
+    <input id="myInput" type="text" class="form-control" placeholder="Search..">
+</div>
+<br />
+
+<div class="col-12 center">
+
+    <table class="table table-striped" id="myTable">
+
+        <tr>
+            <th>Sl</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Loyalty</th>
+            <th>Photo</th>
+            <th class="text-center">Action</th>
+
+        </tr>
+
+
+
+        @{int sl = 0; }
+        @foreach (var i in Model.customers)
+        {
+            <tr>
+                <td>@(sl += 1)</td>
+                <td>@i.Name</td>
+                <td>@i.Code</td>
+                <td>@i.Address</td>
+                <td>@i.Email</td>
+                <td>@i.Contact</td>
+                <td>@i.Loyalty</td>
+                <td>
+
+                    @if (i.Data != null)
+                    {
+                        var base64 = Convert.ToBase64String(i.Data);
+                        var imgsrc = string.Format("data:image/png;base64,{0}", base64);
+                        <img src='@imgsrc' style="max-width:100px;max-height:100px" / >
+                    }
+
+                </td>
+                <td>
+                    <a href="/Customer/Edit?id=@i.ID" class="btn btn-primary" name="Name">Edit</a>
+                    <a href="/Customer/Delete?id=@i.ID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+
+
+
+    </table>
+</div>
+
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        function fileCheck(obj) {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
+            }
+            else {
+                alert("Done");
+            }
+
+        }
+    </script>
+
+}

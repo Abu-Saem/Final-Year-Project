@@ -1,0 +1,105 @@
+﻿@model StockManageWeb.Models.ProductVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-12 row">
+        <div class="col-2"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        <div class="col-8 center">
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(x => x.Code, null, new { @class = "control-label col-sm-2" })
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(x => x.Code, Model.CategoryList, "--Select--", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.ReorderLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.ReorderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReorderLevel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Discription, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-6">
+                    @Html.EditorFor(model => model.Discription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Discription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-2" for="Data">Image</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="file" name="ImageData" onchange="fileCheck(this);" />
+                    @Html.ValidationMessageFor(c => c.Data, null, new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+}
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        function fileCheck(obj) {
+            var ID = $("#ImageData").val();
+            var jsonData = { ID: ID };
+
+            $.ajax(
+                {
+                    url: "/product/GetbyID2",
+                    type: "POST",
+                    data: jsonData,
+                    success: function (Product) {
+
+                        $("#img").val(Product);
+
+
+                        //$("#CodeText").val("ReorderLevel...");
+                        //$("#PreviousCostPriceText").val("unitPrice....");
+                        //$("#PreviousMRPText").val("aProduct...");
+
+                    },
+                    error: function (response) {
+                        alert(response);
+                    }
+
+                }
+            );
+        }
+
+
+    </script>
+}
